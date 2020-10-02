@@ -6,10 +6,11 @@ nav {
     margin-bottom: 20px;
 }
 
-.cityName {
+button {
     width: 250px;
     border: solid 1px gray;
     background-color: white;
+    padding-top: 5px;
 }
 
 #search-box {
@@ -19,11 +20,16 @@ nav {
 
 .form-control {
     width: 200px;
+    display: inline-block;
+}
+
+#button-style {
+    padding-bottom: 20px;
 }
 
 #search {
-    height: 40px;
-    width: 40px;
+    width: 75px;
+    display: inline-block;
 }
 
 #display {
