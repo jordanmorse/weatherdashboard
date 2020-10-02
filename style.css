@@ -56,3 +56,7 @@ nav {
 .low {
     background-color: green;
 }
+
+#uvColor {
+    width: 20%;
+}
