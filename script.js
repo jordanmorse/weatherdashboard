@@ -3,8 +3,7 @@
 $(document).ready(function() {
 var searchHistory = JSON.parse(localStorage.getItem("search-history")) || [];
 
-//on-click function for search bar
-
+//on-click function for search bar, adding searched cities to local storage
 $("#search").on("click", function() {
 
   let cityName = $("#cityName").val();
@@ -17,10 +16,21 @@ $("#search").on("click", function() {
 
     recentSearches();
     forecastClick(cityName);
-  //ajax call to current weather ap
-  searchClick(cityName);
+    searchClick(cityName);
+
 });
 
+//loading last searched city on page load
+function startPage() {
+  var lastItem = searchHistory.pop();
+  searchClick(lastItem);
+  forecastClick(lastItem);
+}
+
+window.onLoad = startPage();
+
+
+//search function for current weather
 function searchClick(cityName) {
   $.ajax({
     url: "https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&units=imperial&appid=2963b1a903afecfd4fe05baa6523f8be",
@@ -37,7 +47,10 @@ function searchClick(cityName) {
       localStorage.setItem("latitude", lat),
       localStorage.setItem("longitude", lon)
 
+      var mainIcon = "http://openweathermap.org/img/w/" + response.weather[0].icon + ".png"
+
       $("#currentCity").text(response.name);
+      $("#mainIcon").attr("src", mainIcon);
       $("#temp").text("Temperature: " + response.main.temp + " °F");
       $("#humidity").text("Humidity: " + response.main.humidity + "%");
       $("#wind").text("Wind Speed: " + response.wind.speed + " MPH");
@@ -55,7 +68,7 @@ function searchClick(cityName) {
       .then(function(response) {
         //console.log(response);
   
-        let uv = $("#uv").text("UV Index: " + response.value);
+        $("#uv").text("UV Index: " + response.value);
         let uv2 = response.value
 
       //categorizing uv by color
@@ -73,13 +86,11 @@ function searchClick(cityName) {
 }
 
 
-//make buttons
+//make buttons for each recent search
 function recentSearches() {
   $("#search-button").empty()
     for (let i=0; i < searchHistory.length; i++) {
-      console.log("anything")
       let button = $("<button>").html(searchHistory[i])
-      console.log(searchHistory[i])
       button.addClass("cityBtn")
       $("#search-button").append(button);
     }
@@ -92,17 +103,15 @@ $(document).on("click", "button.cityBtn", function() {
 })
 
 
-
+//function to call 5 day forecast api and add values to corresponding html
 function forecastClick(cityName) {
   $.ajax({
     url: "https://api.openweathermap.org/data/2.5/forecast?q=" + cityName + "&units=imperial&appid=2963b1a903afecfd4fe05baa6523f8be",
     method: "GET"
   })
 
-
-  //adding forecast data to html
   .then(function(response) {
-    console.log(response);
+    //console.log(response);
     
 
     let iconUrl1 = "http://openweathermap.org/img/w/" + response.list[7].weather[0].icon + ".png";
@@ -111,7 +120,7 @@ function forecastClick(cityName) {
     let iconUrl4 = "http://openweathermap.org/img/w/" + response.list[31].weather[0].icon + ".png";
     let iconUrl5 = "http://openweathermap.org/img/w/" + response.list[39].weather[0].icon + ".png";
     
-
+    $("#currentDate").text(response.list[0].dt_txt);
     $("#date1").text(response.list[7].dt_txt);
     $("#date2").text(response.list[15].dt_txt);
     $("#date3").text(response.list[23].dt_txt);
@@ -136,6 +145,7 @@ function forecastClick(cityName) {
     $("#daily-hum4").text("Humidity: " + response.list[31].main.humidity + "%");
     $("#daily-hum5").text("Humidity: " + response.list[39].main.humidity + "%");
   });
+  
 }
 
 recentSearches();
