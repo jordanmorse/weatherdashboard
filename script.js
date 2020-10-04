@@ -20,15 +20,6 @@ $("#search").on("click", function() {
 
 });
 
-//loading last searched city on page load
-function startPage() {
-  var lastItem = searchHistory.pop();
-  searchClick(lastItem);
-  forecastClick(lastItem);
-}
-
-window.onLoad = startPage();
-
 
 //search function for current weather
 function searchClick(cityName) {
@@ -119,8 +110,10 @@ function forecastClick(cityName) {
     let iconUrl3 = "http://openweathermap.org/img/w/" + response.list[23].weather[0].icon + ".png";
     let iconUrl4 = "http://openweathermap.org/img/w/" + response.list[31].weather[0].icon + ".png";
     let iconUrl5 = "http://openweathermap.org/img/w/" + response.list[39].weather[0].icon + ".png";
+
+    let currentDate = moment().format("MMMM Do YYYY");
     
-    $("#currentDate").text(response.list[0].dt_txt);
+    $("#currentDate").text(currentDate);
     $("#date1").text(response.list[7].dt_txt);
     $("#date2").text(response.list[15].dt_txt);
     $("#date3").text(response.list[23].dt_txt);
@@ -148,5 +141,19 @@ function forecastClick(cityName) {
   
 }
 
+//loading last searched city on page load
+function startPage() {
+  var lastItem = searchHistory.pop();
+  searchClick(lastItem);
+  forecastClick(lastItem);
+}
+
+window.onLoad = startPage();
+
 recentSearches();
 })
+
+let newThing = response.list[0].dt;
+    let newThing2 = newThing.toString();
+
+    console.log(newThing2.toISOString());
