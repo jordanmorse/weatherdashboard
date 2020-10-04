@@ -111,14 +111,21 @@ function forecastClick(cityName) {
     let iconUrl4 = "http://openweathermap.org/img/w/" + response.list[31].weather[0].icon + ".png";
     let iconUrl5 = "http://openweathermap.org/img/w/" + response.list[39].weather[0].icon + ".png";
 
+    var newDate1 = new Date(response.list[7].dt *1000).toDateString();
+    var newDate2 = new Date(response.list[15].dt *1000).toDateString();
+    var newDate3 = new Date(response.list[23].dt *1000).toDateString();
+    var newDate4 = new Date(response.list[31].dt *1000).toDateString();
+    var newDate5 = new Date(response.list[39].dt *1000).toDateString();
+    
+    
     let currentDate = moment().format("MMMM Do YYYY");
     
     $("#currentDate").text(currentDate);
-    $("#date1").text(response.list[7].dt_txt);
-    $("#date2").text(response.list[15].dt_txt);
-    $("#date3").text(response.list[23].dt_txt);
-    $("#date4").text(response.list[31].dt_txt);
-    $("#date5").text(response.list[39].dt_txt);
+    $("#date1").text(newDate1);
+    $("#date2").text(newDate2);
+    $("#date3").text(newDate3);
+    $("#date4").text(newDate4);
+    $("#date5").text(newDate5);
 
     $("#icon1").attr("src", iconUrl1);
     $("#icon2").attr("src", iconUrl2);
@@ -153,7 +160,3 @@ window.onLoad = startPage();
 recentSearches();
 })
 
-let newThing = response.list[0].dt;
-    let newThing2 = newThing.toString();
-
-    console.log(newThing2.toISOString());
